@@ -130,7 +130,7 @@ def game_hash
 end
 
 
-def num_points_scored (name)
+def num_points_scored(name)
   answer = nil
 
   game_hash.each do |team, details_hash|
@@ -138,6 +138,7 @@ def num_points_scored (name)
       players_array.each do |player_details_hash|
         if player_details_hash[:name] == name
           answer = player_details_hash[:points]
+        else
         end
       end
   end
@@ -146,29 +147,28 @@ end
 
 def shoe_size(name)
   answer = nil
-
   game_hash.each do |team, details_hash|
     players_array = details_hash[:players]
       players_array.each do |player_details_hash|
         if player_details_hash[:name] == name
           answer = player_details_hash[:shoe]
+        else
         end
       end
   end
   answer
 end
 
-
 def team_colors (team_name)
     colors = nil
     game_hash.each do |team, team_details_hash|
         if team_details_hash[:team_name] == team_name
             colors = team_details_hash[:colors].flatten
+        else
         end
     end
     colors
 end
-
 
 def team_names
   game_hash.collect do |team, team_details_hash|
@@ -176,23 +176,17 @@ def team_names
   end
 end
 
-
 def player_numbers (team_name)
   player_numbers_list = []
   game_hash.each do |team, team_details_hash|
     if team_details_hash[:team_name] == team_name
       team_details_hash[:players].each do |player|
-        player.each do |key, value|
-          if key == :number 
-            player_numbers_list << value
-          end
-        end
+            player_numbers_list << player[:number]
       end
     end
   end
   player_numbers_list
 end
-
 
 def player_stats(player_name)
   player_stats = {}
@@ -221,3 +215,45 @@ def big_shoe_rebounds
     end
   rebounds
 end
+
+def player_by_number(num)
+  #take in number, return the name
+  game_hash.each do |team, team_details_hash|
+    team_details_hash[:players].each do |stats|
+      if stats[:number] == num
+        return stats[:name]
+      end
+    end
+  end
+end
+
+player_by_number(0)
+true
+
+def most_points_scored(game_hash)
+  game_hash.each do |team, team_hash|
+    team_hash[:players].each do |player, stats_hash|
+      player_score = {player: stats_hash[:points]}
+    end  
+  end
+end  
+
+def most_points_scored(game_hash)
+  players_points = {}
+  game_hash.each do |team, team_hash|
+    team_hash[:players].each do |player|
+      # player_points = {player[:name] => player[:points]}
+      points = player[:points]
+      name = player[:name]
+      puts points
+      puts name
+      players_points[name] = [points]
+    #   player_score = {player: stats_hash[:points]}
+    end  
+  end
+  max = players_points.values.max 
+  players_points.select{|player, points| points == max}
+end  
+
+most_points_scored(game_hash)
+
